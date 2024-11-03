@@ -3,7 +3,6 @@ package ru.hogwarts.school_magic.repository;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.hogwarts.school_magic.model.Student;
-
 import java.util.List;
 
 public interface StudentRepository extends JpaRepository<Student, Integer> {

@@ -1,7 +1,6 @@
 package ru.hogwarts.school_magic.controller;
 
 import jakarta.servlet.http.HttpServletResponse;
-import org.springframework.data.domain.Page;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;

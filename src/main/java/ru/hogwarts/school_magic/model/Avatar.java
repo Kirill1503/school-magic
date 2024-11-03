@@ -1,5 +1,4 @@
 package ru.hogwarts.school_magic.model;
-
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
