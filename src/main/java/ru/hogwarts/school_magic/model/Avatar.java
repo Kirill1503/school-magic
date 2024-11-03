@@ -1,5 +1,6 @@
 package ru.hogwarts.school_magic.model;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
 
 import java.util.Arrays;
@@ -20,6 +21,7 @@ public class Avatar {
 
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "student_id")
+    @JsonBackReference
     private Student student;
 
     public Avatar(Long id, String filePath, Long fileSize, String mediaType, byte[] data, Student student) {

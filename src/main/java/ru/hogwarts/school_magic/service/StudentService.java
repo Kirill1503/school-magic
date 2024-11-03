@@ -41,4 +41,14 @@ public class StudentService {
     public List<Student> getStudentsByFacultyId(long facultyId) {
         return studentRepository.findByFaculty_Id(facultyId);
     }
+
+    public Integer getCountOfStudents() {
+        return studentRepository.findCountOfStudents();
+    }
+    public Double getAverageAgeOfStudents() {
+        return studentRepository.findAverageAgeOfStudents();
+    }
+    public List<Student> getStudentWithMaxId() {
+        return studentRepository.findStudentsWithMaxId();
+    }
 }

@@ -2,6 +2,9 @@ package ru.hogwarts.school_magic.service;
 
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school_magic.model.Avatar;
@@ -14,6 +17,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 import static org.apache.commons.io.FilenameUtils.getExtension;
@@ -47,6 +51,7 @@ public class AvatarService {
         }
 
         Avatar avatar = getAvatar(studentId);
+        avatar.setId(student.getId());
         avatar.setStudent(student);
         avatar.setMediaType(file.getContentType());
         avatar.setFileSize(file.getSize());
@@ -76,5 +81,10 @@ public class AvatarService {
             ImageIO.write(data, getExtension(filePath.getFileName().toString()), bos);
             return bos.toByteArray();
         }
+    }
+
+    public List<Avatar> getAllAvatars(int page, int size) {
+        Pageable pageRequest = PageRequest.of(page - 1, size);
+        return avatarRepository.findAll(pageRequest).getContent();
     }
 }
