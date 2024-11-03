@@ -35,10 +35,24 @@ public class StudentService {
     public List<Student> getStudentsByAge(int age) {
         return studentRepository.findStudentByAge(age);
     }
+
     public List<Student> getStudentsByAgeBetween(int min, int max) {
         return studentRepository.findByAgeBetween(min, max);
     }
+
     public List<Student> getStudentsByFacultyId(long facultyId) {
         return studentRepository.findByFaculty_Id(facultyId);
+    }
+
+    public Integer getCountOfStudents() {
+        return studentRepository.findCountOfStudents();
+    }
+
+    public Double getAverageAgeOfStudents() {
+        return studentRepository.findAverageAgeOfStudents();
+    }
+
+    public List<Student> getStudentWithMaxId() {
+        return studentRepository.findStudentsWithMaxId();
     }
 }
