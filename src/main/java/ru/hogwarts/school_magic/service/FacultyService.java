@@ -21,7 +21,8 @@ public class FacultyService {
     }
 
     public Faculty getFaculty(Integer id) {
-        return facultyRepository.getReferenceById(id);
+        return facultyRepository.findById(id)
+                .orElseThrow();
     }
 
     public Faculty updateFaculty(Faculty faculty) {

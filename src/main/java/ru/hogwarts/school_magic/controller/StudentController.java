@@ -51,4 +51,19 @@ public class StudentController {
     public List<Student> getStudentsByFacultyId(@RequestParam int facultyId) {
         return studentService.getStudentsByFacultyId(facultyId);
     }
+
+    @GetMapping("/allCountOfStudents")
+    public Integer getAllCountOfStudents() {
+        return studentService.getCountOfStudents();
+    }
+
+    @GetMapping("/averageAgeOfStudents")
+    public Double getAverageAgeOfStudents() {
+        return studentService.getAverageAgeOfStudents();
+    }
+
+    @GetMapping("/maxIdStudents")
+    public List<Student> findStudentByIdIsAfter() {
+        return studentService.getStudentWithMaxId();
+    }
 }
