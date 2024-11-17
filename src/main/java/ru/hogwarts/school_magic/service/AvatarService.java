@@ -1,6 +1,8 @@
 package ru.hogwarts.school_magic.service;
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -32,10 +34,13 @@ public class AvatarService {
         this.studentService = studentService;
     }
 
+    Logger logger = LoggerFactory.getLogger(AvatarService.class);
+
     @Value("${avatars.dir.path}")
     private String avatarsDirectory;
 
     public void saveAvatar(int studentId, MultipartFile file) throws IOException {
+        logger.info("Was invoke method save avatar");
         Student student = studentService.getStudent(studentId);
 
         Path filePath = Path.of(avatarsDirectory, studentId + "." + getExtension(file.getOriginalFilename()));
@@ -61,10 +66,12 @@ public class AvatarService {
     }
 
     public Avatar getAvatar(long studentId) {
+        logger.info("Was invoke method getAvatar with studentId {}", studentId);
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
     public byte[] getAvatarData(Path filePath) throws IOException {
+        logger.info("Was invoke method getAvatarData");
         try (InputStream is = Files.newInputStream(filePath);
              BufferedInputStream bis = new BufferedInputStream(is, 1024);
              ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
@@ -83,6 +90,7 @@ public class AvatarService {
     }
 
     public List<Avatar> getAllAvatars(int page, int size) {
+        logger.info("Was invoke method getAllAvatars");
         Pageable pageRequest = PageRequest.of(page - 1, size);
         return avatarRepository.findAll(pageRequest).getContent();
     }
