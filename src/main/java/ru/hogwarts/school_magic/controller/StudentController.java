@@ -66,4 +66,14 @@ public class StudentController {
     public List<Student> findStudentByIdIsAfter() {
         return studentService.getStudentWithMaxId();
     }
+
+    @GetMapping("/withPrefix")
+    public List<String> findStudentWithPrefix(@RequestParam("prefix") String prefix) {
+        return studentService.getStudentsWhoseNameStartsWithPrefix(prefix);
+    }
+
+    @GetMapping("/getAverageAge")
+    public Double getAverageAgeAllStudents() {
+        return studentService.getAverageAgeAllStudents();
+    }
 }

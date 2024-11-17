@@ -7,6 +7,7 @@ import ru.hogwarts.school_magic.model.Faculty;
 import ru.hogwarts.school_magic.model.Student;
 import ru.hogwarts.school_magic.repository.FacultyRepository;
 
+import java.util.Comparator;
 import java.util.List;
 
 @Service
@@ -55,5 +56,12 @@ public class FacultyService {
     public Faculty getFacultyByStudent(Student student) {
         logger.info("Was invoked method for getFacultyByStudent");
         return facultyRepository.findFacultyByStudentsContains(student);
+    }
+
+    public String getLongestFacultyName() {
+        return facultyRepository.findAll().stream()
+                .map(Faculty::getName)
+                .max(Comparator.comparingInt(String::length))
+                .orElse("No faculties found");
     }
 }

@@ -72,4 +72,20 @@ public class StudentService {
         logger.info("Was invoked method for getStudentWithMaxId student");
         return studentRepository.findStudentsWithMaxId();
     }
+
+    public List<String> getStudentsWhoseNameStartsWithPrefix(String prefix) {
+            return studentRepository.findAll().stream()
+                    .parallel()
+                    .filter(student -> student.getName().startsWith(prefix.toUpperCase()))
+                    .map(student -> student.getName().toUpperCase())
+                    .toList();
+    }
+
+    // уже был в прошлом ДЗ
+    public Double getAverageAgeAllStudents() {
+        return studentRepository.findAll().stream()
+                .mapToInt(Student::getAge)
+                .average()
+                .orElse(0.0);
+    }
 }
