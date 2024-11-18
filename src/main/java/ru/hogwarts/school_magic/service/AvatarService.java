@@ -1,7 +1,11 @@
 package ru.hogwarts.school_magic.service;
 
 import jakarta.transaction.Transactional;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 import ru.hogwarts.school_magic.model.Avatar;
@@ -14,6 +18,7 @@ import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.List;
 
 import static java.nio.file.StandardOpenOption.CREATE_NEW;
 import static org.apache.commons.io.FilenameUtils.getExtension;
@@ -29,10 +34,13 @@ public class AvatarService {
         this.studentService = studentService;
     }
 
+    Logger logger = LoggerFactory.getLogger(AvatarService.class);
+
     @Value("${avatars.dir.path}")
     private String avatarsDirectory;
 
     public void saveAvatar(int studentId, MultipartFile file) throws IOException {
+        logger.info("Was invoke method save avatar");
         Student student = studentService.getStudent(studentId);
 
         Path filePath = Path.of(avatarsDirectory, studentId + "." + getExtension(file.getOriginalFilename()));
@@ -47,6 +55,7 @@ public class AvatarService {
         }
 
         Avatar avatar = getAvatar(studentId);
+        avatar.setId(student.getId());
         avatar.setStudent(student);
         avatar.setMediaType(file.getContentType());
         avatar.setFileSize(file.getSize());
@@ -57,10 +66,12 @@ public class AvatarService {
     }
 
     public Avatar getAvatar(long studentId) {
+        logger.info("Was invoke method getAvatar with studentId {}", studentId);
         return avatarRepository.findByStudentId(studentId).orElse(new Avatar());
     }
 
     public byte[] getAvatarData(Path filePath) throws IOException {
+        logger.info("Was invoke method getAvatarData");
         try (InputStream is = Files.newInputStream(filePath);
              BufferedInputStream bis = new BufferedInputStream(is, 1024);
              ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
@@ -76,5 +87,11 @@ public class AvatarService {
             ImageIO.write(data, getExtension(filePath.getFileName().toString()), bos);
             return bos.toByteArray();
         }
+    }
+
+    public List<Avatar> getAllAvatars(int page, int size) {
+        logger.info("Was invoke method getAllAvatars");
+        Pageable pageRequest = PageRequest.of(page - 1, size);
+        return avatarRepository.findAll(pageRequest).getContent();
     }
 }
