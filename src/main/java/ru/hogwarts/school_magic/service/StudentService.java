@@ -75,7 +75,6 @@ public class StudentService {
 
     public List<String> getStudentsWhoseNameStartsWithPrefix(String prefix) {
             return studentRepository.findAll().stream()
-                    .parallel()
                     .filter(student -> student.getName().startsWith(prefix.toUpperCase()))
                     .map(student -> student.getName().toUpperCase())
                     .toList();
