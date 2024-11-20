@@ -5,6 +5,7 @@ import ru.hogwarts.school_magic.model.Faculty;
 import ru.hogwarts.school_magic.model.Student;
 import ru.hogwarts.school_magic.service.FacultyService;
 
+import java.util.Comparator;
 import java.util.List;
 
 @RestController
@@ -50,5 +51,10 @@ public class FacultyController {
     @GetMapping("/byStudent")
     public Faculty getFacultyByStudent(@RequestBody Student student) {
         return facultyService.getFacultyByStudent(student);
+    }
+
+    @GetMapping("/getLongestName")
+    public String getLongestFacultyName() {
+        return facultyService.getLongestFacultyName();
     }
 }
