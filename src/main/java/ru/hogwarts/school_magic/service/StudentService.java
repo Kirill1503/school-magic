@@ -80,11 +80,69 @@ public class StudentService {
                     .toList();
     }
 
-    // уже был в прошлом ДЗ
     public Double getAverageAgeAllStudents() {
         return studentRepository.findAll().stream()
                 .mapToInt(Student::getAge)
                 .average()
                 .orElse(0.0);
+    }
+
+    public void printStudentsName() {
+        logger.info("Was invoked method for printStudentsName student");
+        List<String> listNames = studentRepository
+                .findAll()
+                .stream()
+                .map(Student::getName)
+                .toList();
+
+        if (listNames.size() < 6) {
+            throw new RuntimeException("Need at least 6 students");
+        }
+
+        System.out.println(listNames.get(0));
+        System.out.println(listNames.get(1));
+
+        new Thread(() -> {
+            System.out.println(listNames.get(2));
+            System.out.println(listNames.get(3));
+        } );
+
+        new Thread(() -> {
+            System.out.println(listNames.get(4));
+            System.out.println(listNames.get(5));
+        } );
+        logger.info("Method printStudentsName completed");
+    }
+
+    public void printStudentsNameSynchronized() {
+        logger.info("Was invoked method for printStudentsNameSynchronized student");
+        List<String> listNames = studentRepository
+                .findAll()
+                .stream()
+                .map(Student::getName)
+                .toList();
+
+        if (listNames.size() < 6) {
+            throw new RuntimeException("Need at least 6 students");
+        }
+
+        System.out.println(listNames.get(0));
+        System.out.println(listNames.get(1));
+
+        synchronizedMethod(listNames);
+
+        logger.info("Method printStudentsNameSynchronized completed");
+    }
+
+    private synchronized void synchronizedMethod(List<String> studentsName) {
+        new Thread(() -> {
+            System.out.println(studentsName.get(2));
+            System.out.println(studentsName.get(3));
+        }).start();
+
+        new Thread(() -> {
+            System.out.println(studentsName.get(4));
+            System.out.println(studentsName.get(5));
+        }).start();
     }
 }
